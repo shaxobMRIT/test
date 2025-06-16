@@ -1,23 +1,3061 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-  <meta charset="UTF-8">
-  <title>Test Tizimi</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <h1>Test Fayl Yuklash</h1>
-    <input type="file" id="fileInput" accept=".txt">
-    <button onclick="boshlash()">Testni boshlash</button>
+        <!DOCTYPE html>
+        <html lang="uz">
+        <head>
+          <meta charset="UTF-8">
+          <title>Ichki testlar - qidiruv bilan</title>
+          <style>
+            body { font-family: Arial; max-width: 900px; margin: auto; padding: 20px; }
+            .question { font-weight: bold; margin-top: 20px; }
+            .option { margin: 6px 0; padding: 8px; border-radius: 6px; background: #f0f0f0; }
+            .correct { background-color: #b2fcb2 !important; font-weight: bold; }
+            #output { margin-top: 20px; }
+          </style>
+        </head>
+        <body>
 
-    <div id="quizContainer" style="display:none;">
-      <form id="quizForm"></form>
-      <button type="button" onclick="yakunla()">Yakunlash</button>
-      <div id="natija"></div>
-      <button onclick="location.reload()">🔄 Qayta boshlash</button>
-    </div>
-  </div>
-  <script src="script.js"></script>
-</body>
-</html>
+          <h2>Ichki testlar bazasi orqali qidirish</h2>
+          <input id="searchInput" type="text" style="width:100%; padding: 10px;" placeholder="Savoldan biror parcha yozing...">
+          <button onclick="findQuestions()">TEZLASHTIR</button>
+
+          <div id="output"></div>
+
+          <script>
+            const rawText = `
+
+
+        WEB-sahifalarni ko'rish uchun nima mo'ljallangan?
+        ====
+        #brauzerlar
+        ====
+        Qidiruv serverlari
+        ====
+        telekonfrensiya
+        ====
+        provayderlar
+
+
+        +++++
+
+
+
+        255.255.255.0  tarmoq maskasi(niqobi) qaysi klass(sinf)ga tegishli?
+        ====
+        #C
+        ====
+        A
+        ====
+        B
+        ====
+        D
+
+
+        +++++
+
+
+
+        255.255.255.128  maskali(niqobli) tarmoqda nechta IP manzil mavjud?
+        ====
+        #128
+        ====
+        256
+        ====
+        64
+        ====
+        32
+
+
+        +++++
+
+
+
+        Marshrutlashning nechta turi mavjud?
+        ====
+        #2
+        ====
+        3
+        ====
+        4
+        ====
+        1
+
+
+        +++++
+
+
+
+
+        Port security qaysi tarmoq qurilmalarida sozlanadi?
+        ====
+        #Komutator
+        ====
+        Marshrutizator
+        ====
+        Server
+        ====
+        Hub
+
+
+        +++++
+
+
+
+        Veb-sahifalar quyidagi formatga ega (kengaytma):
+        ====
+        #.HTML
+        ====
+        .DOC
+        ====
+        .???
+        ====
+        .???
+
+
+        +++++
+
+
+
+        Qaysi protokol servis protokollari va transport protokollari orasida zamonaviy kriptografiya yordamida ma'lumotlar himoyasini ta'minlaydi?
+        ====
+        #SSL
+        ====
+        PPP
+        ====
+        SET
+        ====
+        IPSec
+
+
+        +++++
+
+
+
+        Kompyuterning IP manzilini bilish uchun qanday buyruq ishlatiladi?
+        ====
+        #ipconfig
+        ====
+        ifconfig
+        ====
+        Ipconfig/aal
+        ====
+        Show ip address
+
+
+        +++++
+
+
+
+        IPv4da IP manzillar soni nechta?
+        ====
+        #4.2 mlrd
+        ====
+        3 mlrd
+        ====
+        4.2 mln
+        ====
+        5.2 mln
+
+
+        +++++
+
+
+
+        192.168.1.0 odatda nechilik maskada bo'ladi?
+        ====
+        #24
+        ====
+        32
+        ====
+        16
+        ====
+        8
+
+
+        +++++
+
+
+
+        OSI modelidagi qaysi sath IP manzillar bilan ishlaydi?
+        ====
+        #3
+        ====
+        2
+        ====
+        1
+        ====
+        5
+
+
+        +++++
+
+
+
+        TCP/IP protokollar stekini birinchi sathi keltirilgan variantni tanlang.
+        ====
+        #Fizik
+        ====
+        Kanalli
+        ====
+        Tarmoq
+        ====
+        Transport
+
+
+        +++++
+
+        IPSec ulanishda ishtirok etuvchi qurilmalar o'rtasida IP-paketlarni himoyalash va autentifikatsiya qilish uchun protokollar stekining qaysi qatlamida ishlaydi?
+        ====
+        #Tarmoq sathida
+        ====
+        Transport sathida
+        ====
+        ?maliy sathda
+        ====
+        Kanal sathida
+
+
+        +++++
+
+
+
+        Optik kabelda ma'lumot qanday ko'rinishda uzatiladi?
+        ====
+        #Nur
+        ====
+        Puls
+        ====
+        Chastota
+        ====
+        Harorat
+
+
+        +++++
+
+
+
+        Mijozlarning fayllarga kirishini boshqaruvchi server qanday nomlanadi?
+        ====
+        #Fayl serveri
+        ====
+        pochta serveri
+        ====
+        proksi-server
+        ====
+        vositachilik serveri
+
+
+        +++++
+
+
+
+        Qaysi dastur antivirus emas?
+        ====
+        #Defrag
+        ====
+        Norton Antivirus
+        ====
+        Dr Web
+        ====
+        AVP
+
+
+        +++++
+
+
+
+        Umumiy kompyuter resurslari, dasturiy ta'minot va ma'lumotlar foydalanuvchilarga Internet orqali xizmat
+        sifatida taqdim etiladigan taqsimlangan ma'lumotlarni qayta ishlash texnologiyasi nima?
+        ====
+        #Bulutli texnologiyalar
+        ====
+        DBMS
+        ====
+        Blokcheyn
+        ====
+        ADSL
+
+
+        +++++
+
+
+
+        MAC manzilining uzunligi necha baytga teng?
+        ====
+        #6
+        ====
+        3
+        ====
+        8
+        ====
+        4
+
+
+        +++++
+
+
+
+        IPv4 manzilining uzunligi necha bit?
+        ====
+        #32
+        ====
+        16
+        ====
+        28
+        ====
+        128
+
+
+        +++++
+
+
+
+        IPv6 manzili uzunligida nechta bit bor?
+        ====
+        #128
+        ====
+        32
+        ====
+        8
+        ====
+        16
+
+
+        +++++
+
+
+
+        IPv4 manzilining uzunligi necha baytga teng?
+        ====
+        #4
+        ====
+        3
+        ====
+        32
+        ====
+        16
+
+
+        +++++
+
+
+
+        TCP/IP protokoli stekining birinchi qatlamini ko'rsatadigan variantni tanlang.
+        ====
+        #Fizik
+        ====
+        Tarmoq
+        ====
+        Transport
+        ====
+        Ilova
+
+
+        +++++
+
+
+
+        OSI modelining qaysi qatlamida ma'lumotlar freymlar sifatida ifodalanadi?
+        ====
+        #Kanal
+        ====
+        Transport
+        ====
+        Tarmoq
+        ====
+        Taqdimot
+
+
+        +++++
+
+
+
+        Axborot xavfsizligi tushunchasi o'z ichiga qaysi uch tashkil etuvchilarni oladi?
+        ====
+        #Konfidensiallik, foydalanuvchanlik, butunlilik
+        ====
+        Foydalanuvchanlik, ishonchlilik, butunlilik
+        ====
+        Konfidensiallik, ishonchlilik, butunlilik
+        ====
+        Foydalanuvchanlik, saqlanishlik, butunlilik
+
+
+        +++++
+
+
+
+        Mijoz so'ralgan serverga so'rov yuborib, ma'lumotni so'rab oladi, u so'rovga javoban mijoz qabul qilgan faylni yuboradi. Bu jarayon qaysi modelga xos?
+        ====
+        #mijoz-server
+        ====
+        peer-to-peer
+        ====
+        MVC
+        ====
+        MITM
+
+
+        +++++
+
+
+
+        Har bir so'nggi qurilma (peer) server yoki mijoz sifatida ishlashi mumkin. Kompyuter bitta ulanish uchun server, boshqasi uchun mijoz vazifasini bajarishi mumkin.
+        Bu qaysi modelga xos?
+        ====
+        #peer-to-peer
+        ====
+        MVC
+        ====
+        MITM
+        ====
+        mijoz-server
+
+
+        +++++
+
+
+
+        POP3 va IMAP4 ma'lumotni ishonchli yetkazib berish uchun transport darajasida qaysi protokolidan foydalanadilar?
+        ====
+        #TCP
+        ====
+        IP
+        ====
+        PPP
+        ====
+        SMTP
+
+
+        +++++
+
+
+
+        192.168.1.243 /24 ip manzillarining tarmoq manzili(nomi)ni aniqlang.
+        ====
+        #192.168.1.0
+        ====
+        192.168.1.128
+        ====
+        192.168.1.255
+        ====
+        192.168.1.252
+
+
+        +++++
+
+
+
+        192.168.1.243 /25 IP manzilining broadcast manzilini aniqlang.
+        ====
+        #192.168.1.255
+        ====
+        192.168.1.128
+        ====
+        192.168.1.0
+        ====
+        192.168.1.252
+
+
+        +++++
+
+
+
+        Qaysi sinf manzillari faqat tadqiqot maqsadlarida (faqat laboratoriyalarda) qo'llaniladi?
+        ====
+        #D
+        ====
+        B
+        ====
+        E
+        ====
+        C
+
+
+        +++++
+
+
+
+        Lokal IP manzilini global IP manziliga almashtiruvchi texnologiya qaysi?
+        ====
+        #NAT
+        ====
+        OSI
+        ====
+        protokol
+        ====
+        hash
+
+
+        +++++
+
+
+
+        MAC manzil qaysi sanoq sistemasida ifodalanadi?
+        ====
+        #16
+        ====
+        8
+        ====
+        10
+        ====
+        12
+
+
+        +++++
+
+
+
+        IPv6 manzillarini nechta sinfi mavjud?
+        ====
+        #Sinf mavjud emas
+        ====
+        2
+        ====
+        8
+        ====
+        18
+
+
+        +++++
+
+
+
+        Tarmoqdagi barcha kompyuterlar markaziy tugunga ulangan kompyuter tarmog'ining topologiyasi qanday nomlanadi?
+        ====
+        #Yulduz
+        ====
+        Shina
+        ====
+        Halqa
+        ====
+        Daraxt
+
+
+        +++++
+
+
+
+        Switch OSI modelining qaysi sathida ishlaydi?
+        ====
+        #2
+        ====
+        3
+        ====
+        4
+        ====
+        1
+
+
+        +++++
+
+
+
+        Konsentrator (Hub) OSI modelining qaysi sathida ishlaydi?
+        ====
+        #1
+        ====
+        2
+        ====
+        3
+        ====
+        4
+
+
+        +++++
+
+
+
+        255.0.0.0  tarmoq maskasi(niqobi) qaysi klass(sinf)ga tegishli?
+        ====
+        #A
+        ====
+        B
+        ====
+        C
+        ====
+        D
+
+
+        +++++
+
+
+
+        Firewall butun tarmoq trafigini bloklab qo'yishi qaysi xavf-xatar turiga kiradi?
+        ====
+        #?pparat vositalarining buzilishi yoki ishlashidagi xatoliklar
+        ====
+        Dasturiy hujumlar
+        ====
+        Texnik talablar jihatidan eskirish
+        ====
+        Shpionaj
+
+
+        +++++
+
+
+
+        Lokal kompyuter tarmog'i:
+        ====
+        #LAN
+        ====
+        MAN
+        ====
+        WAN
+        ====
+        PAN
+
+
+        +++++
+
+
+
+        .... tarmoq bo'ylab uzatilayotgan axborot oqimini aks ettiradi. Bu qaysi topologiya?
+        ====
+        #Axborotli
+        ====
+        Jismoniy
+        ====
+        Ruxsatli
+        ====
+        Mantiqiy
+
+
+        +++++
+
+
+
+        ... jismoniy topologiya doirasida signallarning harakatini aks ettiradi. Bu qaysi topologiya?
+        ====
+        #Mantiqiy
+        ====
+        Axborotli
+        ====
+        Jismoniy
+        ====
+        Ruxsatli
+
+
+        +++++
+
+
+
+        Xakerlar tomonidan skanerlashning bunday turini kompaniyalar tomonidan skanerlashdan ajratib bo'lmaydi. Bu:
+        ====
+        #Zaifliklarni skanerlash
+        ====
+        Fayllarni kuzatish
+        ====
+        Troyan dasturlarini skanerlash
+        ====
+        Yashirin skanerlash
+
+
+        +++++
+
+
+
+        Tarmoqqa kirish usullarini ko'rsating?
+        ====
+        #Ethernet, PPP, ADSL
+        ====
+        IP, ICMP, ARP, DHCP
+        ====
+        TCP, UDP
+        ====
+        Telnet, SMTP, FTP, NNTP, HTTP, SNMP, DNS, SSH
+
+
+        +++++
+
+
+
+        Qaysi sath ikkita o'zaro ishlovchi hostlar o'rtasida aloqani o'rnatish, boshqarish va yakunlash vazifasini bajaradi?
+        ====
+        #Seans sathi
+        ====
+        Kanal satni
+        ====
+        Tarmoq sathi
+        ====
+        Ilova sathi
+
+
+        +++++
+
+
+
+        Qaysi sath ma'lumotlar patokidagi ma'lumotlarni segmentlash va qayta yig'ish vazifasini bajaradi?
+        ====
+        #Transport sathi
+        ====
+        Ilova sathi
+        ====
+        Tarmoq sathi
+        ====
+        Seans sathi
+
+
+        +++++
+
+
+
+        Qaysi sath paketning mantiqiy manzili asosida uning marshrutizatsiyasiga javob beradi?
+        ====
+        #Tarmoq sathi
+        ====
+        Transport sathi
+        ====
+        Ilova sathi
+        ====
+        Seans sathi
+
+
+        +++++
+
+
+
+        Hujumlarni aniqlaganda qanday faol harakatlarni amalga oshirish mumkin?
+        ====
+        #Hech qanday harakat
+        ====
+        Ogohlantirish
+        ====
+        Qo'shimcha ro'yxatga olish
+        ====
+        Ro'yxatga olish
+
+
+        +++++
+
+
+
+        Kriptografik algoritmlardagi zaifliklarni aniqlash va ulardan foydalanish uchun kriptotahlildan foydalanayotgan shaxs:.
+        ====
+        #Kriptotahlilchi
+        ====
+        Shifrlovchi
+        ====
+        Kriptograf
+        ====
+        Deshifrlovchi
+
+
+        +++++
+
+
+
+        Oxirgi tizimlar o'rtasidagi fizik kanal orqali strukturalanmagan bitlar potokini uzatadi. Bu qaysi sathning vazifasi?
+        ====
+        #Fizik sath
+        ====
+        Tarmoq sathi
+        ====
+        Kanal sathi
+        ====
+        Seans sathi
+
+
+        +++++
+
+
+
+        ACL da "permit" komandasi nimani bildiradi?
+        ====
+        #ruhsat berish
+        ====
+        rad etish
+        ====
+        kirish ro'yxati bo'yicha sharx
+        ====
+        hech nimani anglatmaydi
+
+
+        +++++
+
+
+
+        SSH protokolining vazifasini ko'rsating?
+        ====
+        #Qurilmalarga masofadan bog'lanish
+        ====
+        tashqi tahdidlardan saqlanish vazifasini bajaradi
+        ====
+        ip address ga domen nom berish vazifasini bajaradi
+        ====
+        dhcp vazifasini bajaradi
+
+
+        +++++
+
+
+
+        Kompyuter orqali kommutatorga murojaat qilib, uni sozlashga imkon beruvchi kabel turini ko'rsating:
+        ====
+        #Konsol kabel
+        ====
+        Kross-over kabel
+        ====
+        Optik kabel
+        ====
+        Serial kabel
+
+
+        +++++
+
+
+
+        Marshrutlash nima?:
+        ====
+        #tarmoqning turli segmentlarida joylashgan oxirgi tizimlar o'rtasida ma'lumotlarini uzatishga imkon beruvchi mexanizm hisoblanadi
+        ====
+        tarmoqning oxirgi segmentlarida joylashgan oxirgi tizimlar o'rtasida ma'lumotlarini uzatishga imkon beruvchi mexanizm hisoblanadi
+        ====
+        tarmoqning bosh segmentlarida joylashgan oxirgi tizimlar o'rtasida ma'lumotlarini uzatishga imkon beruvchi mexanizm hisoblanadi
+        ====
+        tarmoqdan tashqaridagi segmentlarda joylashgan oxirgi tizimlar o'rtasida ma'lumotlarini uzatishga imkon beruvchi mexanizm hisoblanadi
+
+
+        +++++
+
+
+
+        ??? manzil berilgan qatorni ko\`rsating ?
+        ====
+        #000B.BE9B.EE4A
+        ====
+        192.168. EE4A
+        ====
+        192.168. 000B.BE9B
+        ====
+        000B.BE9B.
+
+
+        +++++
+
+
+
+        ACL ro\`yxati tarmoqning qaysi mezonlari bo\`yicha trafiklarni filtrlaydi?
+        ====
+        #barcha javoblar to\`g\`ri
+        ====
+        manba manzili bo\`yicha
+        ====
+        port raqami bo\`yicha
+        ====
+        qabul qiluvchi manzili bo\`yicha
+
+
+        +++++
+
+
+
+        ACL qanday maqsadlarda ishlatiladi?
+        ====
+        #Trafiklarni filtrlaydi
+        ====
+        Trafikni marshrutlaydi
+        ====
+        Kanallarni bog'laydi
+        ====
+        Oqimlarni birlashtiradi
+
+
+        +++++
+
+
+
+        Syslog-serverning asosiy vazifasi nima?
+        ====
+        #barcha tarmoq qurilmalaridan loglarni markazlashkan yig'ish
+        ====
+        kommutatorlardan va marshrutizatorlardan loglarni yig'ish
+        ====
+        loglarni qurilmalarning bufer xotirasiga saqlash
+        ====
+        loglarni terminalda real vaqtda akslantirish
+
+
+        +++++
+
+
+
+        Marshrutizatsiya protokollari berilgan javobni toping?
+        ====
+        #RIP, BGP, OSPF
+        ====
+        TCP, IP, UDP
+        ====
+        FTP, HTTP, CGI
+        ====
+        Ethernet, Token Ring, PPP
+
+
+        +++++
+
+
+
+        WAN tarmog'ini yaratish uchun marshrutizatorlarning minimal soni qancha?
+        ====
+        #2
+        ====
+        4
+        ====
+        5
+        ====
+        3
+
+
+        +++++
+
+
+
+        192.168.10.60 manzilining qaysi qismi standart pastki tarmoq niqobi qo'llangan bo'lsa, tarmoq identifikatori (manzili) hisoblanadi?
+        ====
+        #192.168.10
+        ====
+        192.168
+        ====
+        192
+        ====
+        192.168.10.60
+
+
+        +++++
+
+
+
+        Brauzer (masalan, Microsoft Internet Explorer) bu:
+        ====
+        #veb-sahifani ko'ruvchi
+        ====
+        antivirus dasturlari
+        ====
+        fayl arxivlari bilan ishlash dasturlari
+        ====
+        Internet-serverlar
+
+
+        +++++
+
+
+
+        Quyidagilardan qaysilari onlayn firibgarlik usuli emas?
+        ====
+        #Texnik qo'llab-quvvatlash
+        ====
+        Karding
+        ====
+        Fishing xabarlari
+        ====
+        "Nigeriya" xatlari.
+
+
+        +++++
+
+
+
+        Tarmoqda ishlashning odob-axloq qoidalari berilgan qatorni toping?
+        ====
+        #Noxush odam bilan muloqot qilishdan bosh tortish, uni "qora ro'yxatga" kiritish, uni "do'stlar" dan olib tashlash
+        ====
+        boshqa odamlarning fotosuratlarini buzish
+        ====
+        xat va sharhlarda qo'pollik va haqorat qilish
+        ====
+        boshqa odamlarning materiallaridan ruxsatsiz foydalanish
+
+
+        +++++
+
+
+
+        Kompyuter tarmog'ining umumlashtirilgan geometrik tavsifi....
+        ====
+        #tarmoq topologiyasi
+        ====
+        tarmoq qurilmalari
+        ====
+        tarmoq serveri
+        ====
+        tarmoq foydalanuvchilari
+
+
+        +++++
+
+
+
+        Kompyuter tarmog'i protokoli - ...
+        ====
+        #tarmoqdagi ma'lumotlarni qabul qilish va uzatishni, faollashtirishni tartibga soluvchi qoidalar
+        ====
+        tarmoq trafigining texnik tavsiflari
+        ====
+        tarmoq foydalanuvchilari harakatlarini qayd qilish uchun elektron jurnallar
+        ====
+        audit uchun jurnallar
+
+
+        +++++
+
+
+
+        Jahon miqyosidagi global kompyuter tarmog'i bu...
+        ====
+        #WWW
+        ====
+        E-mail
+        ====
+        Intranet
+        ====
+        WEP
+
+
+        +++++
+
+
+
+        Tarmoq ma'lumotlari almashinuvining asosiy (bo'linmas) birligi nima?
+        ====
+        #Paket
+        ====
+        Bit
+        ====
+        Kanal
+        ====
+        So'z
+
+
+        +++++
+
+
+
+        DDoS hujumlari uchun qanday protokol ishlatiladi?
+        ====
+        #ARP
+        ====
+        HTTP
+        ====
+        HTTPS
+        ====
+        POP3
+
+
+        +++++
+
+
+
+        Ikkilik sanoq tizimida 224 raqamining kiritilishini ifodalovchi variantni tanlang?
+        ====
+        #11100000
+        ====
+        10111011
+        ====
+        11000000
+        ====
+        10101000
+
+
+        +++++
+
+
+
+        Ikkilik sanoq tizimida 168 raqamining kiritilishini ifodalovchi variantni tanlang?
+        ====
+        #10101000
+        ====
+        10111011
+        ====
+        10101000
+        ====
+        11100000
+
+
+        +++++
+
+
+
+        Qaysi kabel odatdagi diametri 1 mm bo'lgan ikkita izolyatsiyalangan mis simlardan iborat?
+        ====
+        #O'ralgan juftlik
+        ====
+        Koaksial
+        ====
+        Optik tolali
+        ====
+        MAREA
+
+
+        +++++
+
+
+
+        Axborotni uzatish jarayonida hujum qilish orqali, eshitish va o'zgartirish qaysi javobda keltirilgan?
+        ====
+        #Eavesdropping
+        ====
+        MITM
+        ====
+        Denial-of-service
+        ====
+        Port scanning
+
+
+        +++++
+
+
+
+        ...tarmoq orqali uzatilayotgan axborotning sirliligini, ya'ni faqatgina yuboruvchi va qabulqiluvchiga tushunarli bo'lishini,
+        axborotning sofligini hamda paketlarni autentifikatsiyalashni amalga oshiradi?
+        ====
+        #IPsec
+        ====
+        IP
+        ====
+        PPP
+        ====
+        IPX
+
+
+        +++++
+
+
+
+        ... tizim yoki tarmoq xavfsizlik siyosatini buzib kirishga harakat qilingan usul yoki vositalar aniqlanadi.
+        ====
+        #ruxsatsiz kirishni aniqlash tizimi yordamida
+        ====
+        tarmoq skanerlari yordamida
+        ====
+        tarmoqlararo ekranlar yordamida
+        ====
+        antivirus yordamida
+
+
+        +++++
+
+
+
+        Elektron pochta sizga .... yuborish imkonini beradi.
+        ====
+        #Xabarlar va unga biriktirilgan fayllarni
+        ====
+        Faqat xabarlarni
+        ====
+        Faqat fayllarni
+        ====
+        Videoma'lumotlarni
+
+
+        +++++
+
+
+
+        ... - bu da'vo qilingan foydalanuvchi, jarayon yoki qurilmaning haqiqiyligini tekshirish tartibi.
+        ====
+        #autentifikatsiya
+        ====
+        identifikatsiya
+        ====
+        avtorizatsiya
+        ====
+        ma'murlash
+
+
+        +++++
+
+
+
+        ... - uning egasi haqiqiyligini aniqlash jarayonida tekshiruv axboroti sifatida ishlatiladigan belgilar ketma-ketligi.
+        ====
+        #parol
+        ====
+        pin kod
+        ====
+        identifikator
+        ====
+        haqiqiylikka tekshirish
+
+
+        +++++
+
+
+
+        ... - bu xavfsizlik protokollari hamda shifrlash algoritmlaridan foydalangan holda tarmoq orqali xavfsiz ma'lumot almashish imkonini beradi.
+        ====
+        #IPSec
+        ====
+        IPNT
+        ====
+        ESP
+        ====
+        IPX
+
+
+        +++++
+
+
+
+        Gipermatnni uzatish protokoli:
+        ====
+        #HTTP
+        ====
+        FTP
+        ====
+        POP3
+        ====
+        Telnet
+
+
+        +++++
+
+
+
+        TCP/IP steki nechta sathdan iborat?
+        ====
+        #4
+        ====
+        5
+        ====
+        6
+        ====
+        7
+
+
+        +++++
+
+
+
+        Elektron pochtalarni uzatuvchi-qabul qiluvchi server qanday nomlanadi?
+        ====
+        #Pochta serveri
+        ====
+        Fayl serveri
+        ====
+        Uzatuvchi-qabul qiluvchi server
+        ====
+        Proksi server
+
+
+        +++++
+
+
+
+        POP protokoli qaysi turdagi protokollarni o'z ichiga oladi?
+        ====
+        #pochta protokollari
+        ====
+        internet protokollari
+        ====
+        marshrutlash protokollari
+        ====
+        fayllarni uzatish protokollari
+
+
+        +++++
+
+
+
+        Xostlar o'rtasida fayl va ma'lumotlarni almashish uchun qanday protokol ishlatiladi?
+        ====
+        #FTP
+        ====
+        IP
+        ====
+        HTTP
+        ====
+        IPX
+
+
+        +++++
+
+
+
+        Tizim sozlanmalariga masofadn ulanish protokkollarini ko'rsating?
+        ====
+        #SSH, Telnet
+        ====
+        SSH, RTP
+        ====
+        FTP, LDP
+        ====
+        POP3, LDP
+
+
+        +++++
+
+
+
+        Ish stoliga masofadan ruxsat olish protokoli qaysi javobda ko'rsatilgan?
+        ====
+        #RDP
+        ====
+        FTP
+        ====
+        SMTP
+        ====
+        HTTPS
+
+
+        +++++
+
+
+
+        Quyidagilardan qaysi biri TACACS versiyasiga kirmaydi?
+        ====
+        #TACACS#
+        ====
+        TACACS
+        ====
+        TACACS+
+        ====
+        XTACACS
+
+
+        +++++
+
+
+
+        SMTP protokolini kengaytmasi qaysi javobda to'g'ri keltirilgan?
+        ====
+        #Simple Mail Transfer Protocol
+        ====
+        Session Mail Transfer Protocol
+        ====
+        Security Mail Transfer Protocol
+        ====
+        Simple Massege Transfer Protocol
+
+
+        +++++
+
+
+
+        HTTP protokolini kengaytmasi qaysi javobda to'g'ri keltirilgan?
+        ====
+        #Hyper Text Transfer Protocol
+        ====
+        High Terminal Transfer Protocol
+        ====
+        High Text Tranzit Protocol
+        ====
+        Hyper Terminal Tranzit Protocol
+
+
+        +++++
+
+
+
+        ICMP protokolini kengaytmasi qaysi javobda to'g'ri keltirilgan?
+        ====
+        #Internet Control Message Protocol
+        ====
+        Intranet Control Message Protocol
+        ====
+        Internet Connection Message Protocol
+        ====
+        Illegal Control Mail Protocol
+
+
+        +++++
+
+
+
+        "Xizmat ko'rsatishdan voz kechish" hujumini toping?
+        ====
+        #DoS
+        ====
+        DHCP poisoning
+        ====
+        Resource Attack
+        ====
+        MiTM
+
+
+        +++++
+
+
+
+        "O'rtada turgan odam hujumi" qaysi javobda keltirilgan?
+        ====
+        #MiTM
+        ====
+        DoS
+        ====
+        DHCP poisoning
+        ====
+        Resource Attack
+
+
+        +++++
+
+
+
+        Agar sessiya identifikatori kodlanmagan bo'lsa, tajovuzkor seans identifikatorini sotib olishi va sessiyani o'g'irlashi mumkin" bu qaysi hujum turi?
+        ====
+        #Session Hijacking
+        ====
+        Man-in-the-Middle
+        ====
+        Information Leakage
+        ====
+        Blind Session Attacks
+
+
+        +++++
+
+
+
+        Hujumlarni aniqlashning asosiy mexanizmi:
+        ====
+        #Antivirus dasturi
+        ====
+        Tarmoq dasturlari
+        ====
+        Loglarni qo'lda tekshirish
+        ====
+        Loglarni avtomatik tekshirish
+
+
+        +++++
+
+
+
+        ...- buzilish aniqlanganda interfeysni error-disabled holatiga o\`tkazadi va o\`chiradi.  Undan tashqari syslog, SNMP trap, violetion counter ka\`bi jurnallashtiruvchilarga xabar jo\`natiladi. Ushbu holatdan chiqarish uchun shutdown va no shutdown buyruqlaridan foydalaniladi.
+        ====
+        #shutdown
+        ====
+        restrict
+        ====
+        protect
+        ====
+        portsecurity
+
+
+        +++++
+
+
+
+        E-mail- bu:
+        ====
+        #Kompyuter tarmoqlarida xat almashish (elektron pochta)
+        ====
+        Qidiruv dasturi
+        ====
+        Pochta server nomi
+        ====
+        Pochta dasturi
+
+
+        +++++
+
+
+
+        Fayl arxivlarini o'z ichiga olgan Internet-serverlar sizga quyidagilarga imkon beradi:
+        ====
+        #kerakli fayllarni yuklab olish
+        ====
+        elektron pochta xabarini olish uchun
+        ====
+        telekonferensiyalarda ishtirok etish
+        ====
+        video konferentsiyalarni o'tkazish
+
+
+        +++++
+
+
+
+        Fayl uzatish protokoli ko'rsatilgan qatorni ko'rsating
+        ====
+        #FTP
+        ====
+        SMTP
+        ====
+        HTTP
+        ====
+        telnet
+
+
+        +++++
+
+
+
+        Internetdagi elektron pochta manzili belgilangan: user_name@tuit.uz. Yuqori darajadagi domen nomini toping?
+        ====
+        #.uz
+        ====
+        tuit.uz
+        ====
+        user_name@tuit.uz
+        ====
+        tuit
+
+
+        +++++
+
+
+
+        OSI modeli nechta sathdan iborat?
+        ====
+        #7
+        ====
+        6
+        ====
+        5
+        ====
+        4
+
+        +++++
+
+
+
+        Protokol nima ?
+        ====
+        #kompyuter tarmog'i orqali ma'lumotlarni uzatish standarti
+        ====
+        lokal tarmoqda ishlaydigan qurilma
+        ====
+        kompyuterning aloqa kanallari orqali fayllarni yuborish qobiliyati
+        ====
+        elektron pochta orqali xabarlarni yuborish uchun standart
+
+
+        +++++
+
+
+
+        IPv4 manzilida nechta oktet bor?
+        ====
+        #4
+        ====
+        3
+        ====
+        5
+        ====
+        8
+
+
+        +++++
+
+
+
+        HTTPS protokol portini aniqlang?
+        ====
+        #443
+        ====
+        234
+        ====
+        12
+        ====
+        34
+
+
+        +++++
+
+
+
+        DHCP ning asosiy vazifasi nima?
+        ====
+        #Avtomatik ravishda IP manzillarni ajratadi
+        ====
+        Internetga kiradi
+        ====
+        Mijoz-server balansini saqlaydi
+        ====
+        IPv4 ni IPv6 ga o'zgartiradi
+
+
+        +++++
+
+
+
+        Qaysi tarmoq topologiyasi mavjud emas?
+        ====
+        #Jurnal
+        ====
+        Yulduz
+        ====
+        Shina
+        ====
+        Halqa
+
+
+        +++++
+
+
+
+        Elektron pochta protokoli portini belgilang.
+        ====
+        #25
+        ====
+        22
+        ====
+        21
+        ====
+        23
+
+
+        +++++
+
+
+
+        Elektron pochta protokollari berilgan qatorni belgilang?
+        ====
+        #SMTP, POP, IMAP
+        ====
+        HTTP, HTTPS
+        ====
+        DNS, BOOTP
+        ====
+        DNS, DHCP
+
+
+        +++++
+
+
+
+        Amaliy sathda deyarli barcha xizmatlar qaysi sxema bo'yicha ishlaydi?
+        ====
+        #Mijoz-server
+        ====
+        kompyuter-foydalanuvchi
+        ====
+        server-kompyuter
+        ====
+        mijoz-internet
+
+
+        +++++
+
+
+
+        Himoyalanayotgan resurs to'plami uchun beriladigan ruxsat qoidalari to'plami nima deyiladi?
+        ====
+        #ACL
+        ====
+        ASL
+        ====
+        AVL
+        ====
+        ACM
+
+
+        +++++
+
+
+
+        Foydalanuvchi autentifikatsiyasini, ruxsatsiz foydalanishdan ma'lumotlarni himoyalashni hamda tarmoq
+        bo'yicha ma'lumotlarni xavfsiz uzatish vositalarini amalga oshiradigan dasturiy-apparat vositalariga kiradigan himoya usulini ko'rsating?
+        ====
+        #Texnik
+        ====
+        Tashkiliy-huquqiy
+        ====
+        Fizik
+        ====
+        Huquqiy
+
+
+        +++++
+
+
+
+        Amaliy sath protokollaridan axborotlarni olish va uni OSI modelidan foydalanuvchi barcha kompyuterlarga tushunarli formatga o'giruvchi sath nomi?
+        ====
+        #Taqdimot
+        ====
+        Tarmoq
+        ====
+        Amaliy
+        ====
+        Seans
+
+
+        +++++
+
+
+
+        Ochiq tizimlar munosabati OSI modeli qaysi tashkilotda ishlab chiqilgan?
+        ====
+        #Standartlashtirish xalqaro tashkiloti
+        ====
+        Elektroaloqa xalqaro ittifoqi
+        ====
+        Telefoniya va Telegrafiya bo'yicha Xalqaro Maslahat komiteti
+        ====
+        Kompyuter ishlab chiqaruvchilar Yevropa Assotsiatsiyasi
+
+
+        +++++
+
+
+
+        255.255.0.0  tarmoq maskasi(niqobi) qaysi klass(sinf)ga tegishli?
+        ====
+        #B
+        ====
+        C
+        ====
+        D
+        ====
+        A
+
+
+        +++++
+
+
+
+        Modem - bu:
+        ====
+        #Internetga ulanish uchun texnik qurilma
+        ====
+        Tarmoq protokoli
+        ====
+        Pochta dasturi
+        ====
+        Internet serveri
+
+
+        +++++
+
+
+
+        ...- tarmoq tugunlarining aloqasi yoki joylashishini aks ettiradi.
+        ====
+        #jismoniy topologiya
+        ====
+        axborotli topologiya
+        ====
+        mantiqiy topologiya
+        ====
+        strukturaviy topologiya
+
+
+        +++++
+
+
+
+        OSI modelining 1-sathida (ya'ni, fizik sathda) ishlaydigan, aloqa uchun tarmoqdagi qurilmalarni birlashtiruvchi tarmoq qurilmasi nima?
+        ====
+        #Hub
+        ====
+        Switch
+        ====
+        Router
+        ====
+        Repiter
+
+
+        +++++
+
+
+
+        ...- tugunlar kommunikatsiyaning OSI modelidagi 2 qatlamda ishlovchi tarmoq qurilmalaridir.  "aqlli xab" deb ham yuritiladi.
+        ====
+        #Switch
+        ====
+        Hub
+        ====
+        Router
+        ====
+        Repiter
+
+
+        +++++
+
+
+
+        ...- OSI modelining 3-qatlamida ishlovchi qurilma bo'lib, bir- biridan mustaqil bo'lgan 2 yoki undan ortiq tarmoqlar o'rtasidagi aloqani tashkil etadi.
+        ====
+        #Router
+        ====
+        Switch
+        ====
+        Hub
+        ====
+        Repiter
+
+
+        +++++
+
+
+
+        Mijozlarga fayllarni boshqarishni beruvchi server qanday nomlanadi?
+        ====
+        #Fayl serveri
+        ====
+        Pochta serveri
+        ====
+        Proksi server
+        ====
+        Yordamchi server
+
+
+        +++++
+
+
+
+        Global kompyuter tarmog'i:
+        ====
+        #WAN
+        ====
+        MAN
+        ====
+        LAN
+        ====
+        PAN
+
+
+        +++++
+
+
+
+        Tarmoq sathi protokollari qaysi qatorda keltirilgan?
+        ====
+        #IP, ARP, IPSec, ICMP, OSPF
+        ====
+        TCP, ARP, UDP, ICMP, OSPF
+        ====
+        UDP, ARP, IPSec, SIP, FTP
+        ====
+        IP, ARP, PPP, ICMP, TCP
+
+
+        +++++
+
+
+
+        ...- qoidalar axborotni faqat qonuniy foydalanuvchilar tomonidan "o'qilishini" ta'minlaydi.
+        ====
+        #Konfidensiallik
+        ====
+        Yaxlitlik
+        ====
+        Butunlik
+        ====
+        Foydalanuvchanlik
+
+
+        +++++
+
+
+
+        ...-ruxsat etilmagan "bajarish" dan himoyalaydi.
+        ====
+        #Butunlik
+        ====
+        Konfidensiallik
+        ====
+        Ochiqlilik
+        ====
+        Foydalanuvchanlik
+
+
+        +++++
+
+
+
+        192.168.100.13 IP manzil turi va sinfini toping?
+        ====
+        #C sinf, kulrang
+        ====
+        B sinf, kulrang
+        ====
+        C sinf, oq
+        ====
+        B sinf, oq
+
+
+        +++++
+
+
+
+        Pochta xodimining xatlarni noqonuniy o'qishi qaysi xavf-xatar turiga kiradi?
+        ====
+        #Tovlamachilik
+        ====
+        Shpionaj
+        ====
+        O'g'irlik
+        ====
+        Intellektual mulkni obro'sizlantirilishi
+
+
+        +++++
+
+
+
+        Zaifliklar uchun kriptografik algoritmlarni tahlil qilish san'ati:
+        ====
+        #Kriptotahlil
+        ====
+        Kriptografiya
+        ====
+        Deshifrlash
+        ====
+        Shifrlash
+
+
+        +++++
+
+
+
+        Qaysi xavfsizlik xizmati xizmatni rad etish hujumlaridan himoyalanish uchun mo'ljallangan?
+        ====
+        #Foydalanuvchanlik
+        ====
+        Konfidensiallik
+        ====
+        Identifikatsiya qilish
+        ====
+        Butunlik
+
+
+        +++++
+
+
+
+        Foydalanishni rad etish hujumi quyidagilarga qaratilgan:
+        ====
+        #kompyuter tizimining ishlamay qolishi
+        ====
+        ma'lumotni yo'q qilish
+        ====
+        axborotni qayta ishlash dasturlari
+        ====
+        aloqa kanallarini blokirovka qilish
+
+
+        +++++
+
+
+
+        Tinglash - bu:
+        ====
+        #boshqa birovning suhbatidan ma'lumot olish
+        ====
+        ma'lumotlarni topish uchun fayllarni ko'rib chiqish
+        ====
+        uzatish jarayonida ma'lumotlarni olish
+        ====
+        ma'lumotlarni topish uchun hujjatlarni ko'rish
+
+
+        +++++
+
+
+
+        "Ulanishga asoslangan" protokollar oilasini toping?
+        ====
+        #TCP
+        ====
+        UDP
+        ====
+        TCP va UDP
+        ====
+        VoIP
+
+
+        +++++
+
+
+
+        "Ulanishga asoslanmagan" protokollar oilasini toping?
+        ====
+        #UDP
+        ====
+        TCP va UDP
+        ====
+        VoIP
+        ====
+        TCP
+
+
+        +++++
+
+
+
+        Kompyuter tarmoqlarining asosiy turlari...
+        ====
+        #lokal(mahalliy), global, mintaqaviy
+        ====
+        mijoz, korporativ, xalqaro
+        ====
+        ijtimoiy, ko'ngilochar, biznesga yo'naltirilgan
+        ====
+        biznesga yo'naltirilgan, korporativ, xalqaro
+
+
+        +++++
+
+
+
+        Quyidagi kompyuterlarni ulash sxemalaridan qaysi biri yopiq sxema hisoblanadi?
+        ====
+        #Halqa
+        ====
+        Shina
+        ====
+        Yulduz
+        ====
+        Daraxt
+
+
+        +++++
+
+
+
+        Hujumlarni aniqlash tizimlari berilgan qatorni toping?
+        ====
+        #IDS
+        ====
+        IPS
+        ====
+        VPN
+        ====
+        DPA
+
+
+        +++++
+
+
+
+        Hujumlarni oldini olish tizimlari berilgan qatorni toping?
+        ====
+        #IPS
+        ====
+        VPN
+        ====
+        DPA
+        ====
+        IDS
+
+
+        +++++
+
+
+
+        SCP (secure copy) protokolini vazifasi nima?
+        ====
+        #Fayllarni xavfsiz nusxalash
+        ====
+        Fayllarni o'chirish
+        ====
+        Ma'lumotlarni o'zgartirish
+        ====
+        Fayllarni zaxiralash
+
+
+        +++++
+
+
+
+        Kompyuter tarmog'ining umumiy geometrik tavsifi:
+        ====
+        #Tarmoq topologiyasi
+        ====
+        Tarmoq qurilmasi
+        ====
+        Tarmoq serveri
+        ====
+        Foydalanuvchi tarmog'i
+
+
+        +++++
+
+
+
+        Quyidagilardan qaysi biri ko'proq spam deb ataladi? 1 - ular ishtirok etmagan tanlovda g'olib chiqqanligi to'g'risidagi bildirishnomalar 2 - Do'stingizdan xabar 3 - qarz haqida bankdan xat 4 - jurnalni ular obuna bo'lgan nashrdan elektron pochta orqali tarqatish
+        ====
+        #1
+        ====
+        2
+        ====
+        3
+        ====
+        4
+
+
+        +++++
+
+
+
+        Marshrutizator qaysi obyektlar uchun marshrutni tanlaydi?
+        ====
+        #Uchinchi pog'ona paketlari uchun
+        ====
+        Ikkinchi pog'ona freymlari uchun
+        ====
+        Birinchi pog'ona bitlari uchun
+        ====
+        To'rtinchi pog'ona segmentlari uchun
+
+
+        +++++
+
+
+
+        Pog'onalarning qaysi tartibi to'g'ri hisoblanadi?====
+        #1 - fizik, 2 - kanal, 3 - tarmoq, 4 - transport, 5 -seans, 6 -taqdimot, 7 - ilova
+        ====
+        1 - fizik, 2 - kanal, 3 - transport, 4 - tarmoq, 5 -taqdimot, 6 - seans, 7 - ilova
+        ====
+        1 - fizik, 2 - kanal, 3 - tarmoq, 4 - seans, 5 -transport, 6 - taqdimot, 7 - ilova
+        ====
+        1 - fizik, 2 - tarmoq, 3 - seans, 4 - kanal, 5 -transport, 6 - ilova , 7 - taqdimot
+
+
+        +++++
+
+
+
+        Qaysi ikkilik sanoq tizimidagi son o'nlik 151 songa mos keladi?
+        ====
+        #10010111
+        ====
+        10100110
+        ====
+        10101010
+        ====
+        10010011
+
+
+        +++++
+
+
+
+        Ikki kompyuterni telefon liniyasi orqali ulash uchun sizda quyidagilar bo'lishi kerak:
+        ====
+        #Ikkita modem
+        ====
+        Pult
+        ====
+        Maxsus dasturiy vosita
+        ====
+        Pochta dasturi
+
+
+        +++++
+
+
+
+        1 Gbit/s nimaga teng ?
+        ====
+        #1024 Mbit/s
+        ====
+        1024  Mbayt/s
+        ====
+        1024 Kbit/s
+        ====
+        1024 bayt/s
+
+
+        +++++
+
+
+
+        2 Gbit/s nimaga teng?
+        ====
+        #2048 Mbit/s
+        ====
+        2048  Mbayt/s
+        ====
+        2048 Kbit/s
+        ====
+        2048 bayt/s
+
+
+        +++++
+
+
+
+        OSI modelidagi qaysi sath MAC manzillari bilan ishlaydi?
+        ====
+        #1
+        ====
+        2
+        ====
+        3
+        ====
+        4
+
+
+        +++++
+
+
+
+        192.168.1.243 /24 uchun broadcast manzilini aniqlang.
+        ====
+        #192.168.1.255
+        ====
+        192.168.1.128
+        ====
+        192.168.1.256
+        ====
+        192.168.1.252
+
+
+        +++++
+
+
+
+        Lokal tarmoqdagi kompyuterlarni ulash uchun asosan qanday kabel ishlatiladi?
+        ====
+        #O'ralgan juftlik (utp)
+        ====
+        Koaksial kabel
+        ====
+        Optik tola
+        ====
+        Krossover kabel
+
+
+        +++++
+
+
+
+        192.168.10.51/24 manzilining qaysi qismi tarmoqning identifikatori (manzili) hisoblanadi?
+        ====
+        #192.168.10
+        ====
+        192.168
+        ====
+        192
+        ====
+        192.168.10.51
+
+
+        +++++
+
+
+
+        192.168.1.16/24 manzilining qaysi qismi tarmoq identifikatori (manzili) hisoblanadi?
+        ====
+        #192.168.1
+        ====
+        192
+        ====
+        192.168
+        ====
+        192.168.1.16
+
+
+        +++++
+
+
+
+        192.168.3.36 ning qaysi qismi standart pastki tarmoq niqobi ishlatilgan deb hisoblasak, tarmoq identifikatori (manzil) hisoblanadi?
+        ====
+        #192.168.3
+        ====
+        192.168
+        ====
+        192.168.3.36
+        ====
+        192
+
+        +++++
+
+
+
+        WAN tarmog'ini yaratish uchun marshrutizatorlarning minimal soni qancha?
+        ====
+        #2
+        ====
+        4
+        ====
+        5
+        ====
+        3
+
+
+        +++++
+
+
+
+        Kompyuterni server deb hisoblash mumkinmi?
+        ====
+        #ha
+        ====
+        server deb hisoblash mumkin, lekin qonun bo'yicha bu mumkin emas
+        ====
+        qonun bo'yicha bu mumkin emas
+        ====
+        yo'q
+
+
+        +++++
+
+
+
+        OSI modelida 7-sathni ko'rsating?
+        ====
+        #Ilova sathi
+        ====
+        Taqdimot sathi
+        ====
+        Seans sathi
+        ====
+        Kanal sathi
+
+
+        +++++
+
+
+
+        OSI modelida 6-sathni ko'rsating?
+        ====
+        #Taqdimot sathi
+        ====
+        Ilova sathi
+        ====
+        Seans sathi
+        ====
+        Kanal sathi
+
+
+        +++++
+
+
+
+        OSI modelida 5-sathni ko'rsating?
+        ====
+        #Seans sathi
+        ====
+        Taqdimot sathi
+        ====
+        Ilova sathi
+        ====
+        Kanal sathi
+
+
+        +++++
+
+
+
+        OSI modelida 4-sathni ko'rsating?
+        ====
+        #Transport sathi
+        ====
+        Taqdimot sathi
+        ====
+        Ilova sathi
+        ====
+        Kanal sathi
+
+
+        +++++
+
+
+
+        OSI modelida 3-sathni ko'rsating?
+        ====
+        #Tarmoq sathi
+        ====
+        Transport sathi
+        ====
+        Taqdimot sathi
+        ====
+        Ilova sathi
+
+
+        +++++
+
+
+
+        OSI modelida 2-sathni ko'rsating?
+        ====
+        #Kanal sathi
+        ====
+        Tarmoq sathi
+        ====
+        Transport sathi
+        ====
+        Taqdimot sathi
+
+
+        +++++
+
+
+
+        OSI modelida 1-sathni ko'rsating?
+        ====
+        #Fizik sath
+        ====
+        Tarmoq sathi
+        ====
+        Transport sathi
+        ====
+        Taqdimot sathi
+
+
+        +++++
+
+
+
+        END devicesga nimalar kiradi?
+        ====
+        #P?, laptop, server
+        ====
+        P?, server, router
+        ====
+        router, switch, server
+        ====
+        router, switch, P?
+
+
+        +++++
+
+
+
+        IPv4 manzillarning nechta sinfi mavjud?
+        ====
+        #5
+        ====
+        4
+        ====
+        6
+        ====
+        3
+
+
+        +++++
+
+
+
+        Wi-Fi standartini toping?
+        ====
+        #802.11n
+        ====
+        902.11
+        ====
+        600.11
+        ====
+        702.100
+
+
+        +++++
+
+
+
+        Asosiy maqsadi fayllarni bitta kompyuterdan boshqasiga o'tkazish yoki fayllarni serverlardan mijozlarga va
+        mijozlardan serverlarga ko'chirish bo'lgan protokol qaysi?
+        ====
+        #FTP
+        ====
+        TFTP
+        ====
+        HTTP
+        ====
+        SMTP
+
+
+        +++++
+
+
+
+        Tarmoq sathida xabarlar nima deb nomaladi?
+        ====
+        #paket
+        ====
+        trafik
+        ====
+        protokol
+        ====
+        stek
+
+
+        +++++
+
+
+
+        Kompyuter internetga ulanishi uchun albatta ...... bo'lishi kerak? Nuqtalar o'rniga berilgan so'zni toping?
+        ====
+        #IP manzil
+        ====
+        Web-server
+        ====
+        Bosh veb-sahifa
+        ====
+        Domen nomi
+
+
+        +++++
+
+
+
+        IP manzillar oilasidagi birinchi manzilning nomi nima?
+        ====
+        #tarmoq manzili
+        ====
+        guruhli uzatish (Multicast) manzil
+        ====
+        oxirgi qurilma manzili (Unicast)
+        ====
+        eshittirish manzili (Broadcast)
+
+
+        +++++
+
+
+
+        Bir tarmoqdagi qurilmalardan boshqa tarmoqdagi qurilmalarga ma'lumot yuborishga nima imkon beradi?
+        ====
+        #standart shlyuz (Default gateway)
+        ====
+        guruhli uzatish (Multicast) manzil
+        ====
+        oxirgi qurilma manzili (Unicast)
+        ====
+        eshittirish manzili (Broadcast)
+
+
+        +++++
+
+
+
+        /27 maska qanday ko'rinishga ega?
+        ====
+        #255.255.255.224
+        ====
+        255.255.255.128
+        ====
+        255.255.255.240
+        ====
+        255.255.255.192
+
+
+        +++++
+
+
+
+        Internet tarmog'ida quyidagi pochta manzili derilgan:  networksecurity@tuit.uz. Pochta server nomini toping?
+        ====
+        #tuit.uz
+        ====
+        networksecurity@tuit.uz
+        ====
+        tuit
+        ====
+        networksecurity
+
+
+        +++++
+
+
+
+        Tarmoqning tarmoq ichida taqsimlanishi nima deb ataladi?
+        ====
+        #Qism tarmoq(Subnet)
+        ====
+        to'liq tarmoq (Fullnet)
+        ====
+        resurslarni taqsimlash
+        ====
+        yuklamaning taqsimlanishi
+
+
+        +++++
+
+
+
+        Ma'lumotlarni  ishonchli yetkazib berilishini ta'minlaydigan transport qatlami protokoli qaysi?
+        ====
+        #TCP
+        ====
+        UDP
+        ====
+        FTP
+        ====
+        TFTP
+
+
+        +++++
+
+
+
+        Hozirda qanday IP manzillar qo'llanilmoqda?
+        ====
+        #IPv4 va IPv6
+        ====
+        IPv5
+        ====
+        faqat  IPv4
+        ====
+        faqat  IPv6
+
+
+        +++++
+
+
+
+        Foydalanuvchilarni aloqa kanallari va kommutatsiya vositalarini qo'llagan holda o'zaro ma'lumot almashishlari,
+        tarmoqdagi texnik, dasturiy, axborot resurslaridan foydalanishlari uchun yagona tizimga ulangan kompyuterlar to'plami qaysi?
+        ====
+        #Kompyuter tarmog'i
+        ====
+        Kompyuter tizimi
+        ====
+        Internet
+        ====
+        Intranet
+
+
+        +++++
+
+
+
+        ... - bir ofis, bino ichidagi aloqa tarmog'i.
+        ====
+        #LAN
+        ====
+        PAN
+        ====
+        GAN
+        ====
+        CAN
+
+
+        +++++
+
+
+
+        ...... usulida testlovchi testlanadigan tarmoq infrastrukturasi haqida hech qanday dastlabki bilimlarga ega bo'lmaydi.
+        Testlovchi real tajribalarni o'tkazishdan oldin tizim va qurilmalarning turi va joylashuvini aniqlashi lozim.
+        Bunda tashkilotga tashqaridan real hujumlarni imitatsiyalashga imkon beradi.
+        ====
+        #Black box
+        ====
+        White box
+        ====
+        Grey box
+        ====
+        Green box
+
+
+        +++++
+
+
+
+        Quyidagi protokollardan qaysi biri ilova sathining autentifikatsiya protokoli sifatida ishlatiladi?
+        ====
+        #TACACS
+        ====
+        DHCP
+        ====
+        SSH
+        ====
+        Telnet
+
+
+        +++++
+
+
+
+        Tijorat saytlarida oylik zaiflik tekshiruvi qaysi sohalarda o'tkazilishi kerak?
+        ====
+        #Tashkilotning ichki tarmog'ida
+        ====
+        Xavfsizlik devori(firewall) bilan himoyalangan zona ichida
+        ====
+        Mijoz tarmog'ida
+        ====
+        Tashqi mijoz tarmog'ida
+
+
+        +++++
+
+
+
+        Xodimlarga qanday xizmatlar ko'rsatilishiga ruxsat berish kerak?
+        ====
+        #Pochta, shifrlangan pochta, internet
+        ====
+        Telnet, ftp
+        ====
+        NFS, NetBIOS
+        ====
+        Istalgan xizmatlar
+
+
+        +++++
+
+
+
+        Yong'in, toshqin yoki zilzila ma'lumotlarni yo'q qilishiga sabab bo'ladi. Bu qanday tahdid turi?
+        ====
+        #Tabiiy ofatlar
+        ====
+        Shpionaj
+        ====
+        Inson xatoliklari
+        ====
+        Sabotaj
+
+
+        +++++
+
+
+
+        Mahsulot ishlab chiqarish jadvalini o'g'rilash. Bu qanday tahdid turi?
+        ====
+        #Shpionaj
+        ====
+        Inson xatoliklari
+        ====
+        Sabotaj
+        ====
+        Tabiiy ofatlar
+
+
+        +++++
+
+
+
+        Xodim tashkilot noutebookini avtoturargohda to'satdan tushirib qo'yishi. Bu qanday tahdid turi?
+        ====
+        #Inson xatoliklari
+        ====
+        Sabotaj
+        ====
+        Tabiiy ofatlar
+        ====
+        Shpionaj
+
+
+        +++++
+
+
+
+        Virus, qurt yoki DOS hujumi dasturiy yoki apparat ta'minotni buzadi. Bu qanday tahdid turi?
+        ====
+        #Dasturiy hujumlar
+        ====
+        Sabotaj
+        ====
+        Tabiiy ofatlar
+        ====
+        Shpionaj
+
+
+        +++++
+
+
+
+        Xatolik dastur yuklanishiga to'sqinlik qiladi. Bu qanday tahdid turi?
+        ====
+        #Dasturning buzilishi yoki undagi xatoliklar
+        ====
+        Sabotaj
+        ====
+        Tabiiy ofatlar
+        ====
+        Shpionaj
+
+
+        +++++
+
+
+
+        Dastur operatsion tizimning yangi versiyasi bilan ishlay olmaydi. Bu qanday tahdid turi?
+        ====
+        #Texnik talablar jihatidan eskirish
+        ====
+        Dasturning buzilishi yoki undagi xatoliklar
+        ====
+        Tabiiy ofatlar
+        ====
+        Shpionaj
+
+
+        +++++
+
+
+
+        Xodim kompyuterining o'g'irlanishi. Bu qanday tahdid turi?
+        ====
+        #O'g'rilik
+        ====
+        Dasturning buzilishi yoki undagi xatoliklar
+        ====
+        Tabiiy ofatlar
+        ====
+        Shpionaj
+
+
+        +++++
+
+
+
+        Suqilib kirishni testlashni nechi xil usuli bor?
+        ====
+        #3
+        ====
+        2
+        ====
+        1
+        ====
+        4
+
+
+        +++++
+
+
+
+        Tarmoqlararo ekran(firewall) - bu:
+        ====
+        #avtorizatsiya qilingan ma'lumotlardan tashqari barcha trafikni blokirovka qilish uchun mo'ljallangan tarmoqqa kirishni boshqarish qurilmasi
+        ====
+        vazifasi trafikni imkon qadar tezroq manzilga yetkazish bo'lgan qurilma
+        ====
+        tarmoq trafigini keshlash qurilmasi
+        ====
+        Tarmoq trafigini shifrlash qurilmasi
+
+
+        +++++
+
+
+
+        Cisco marshrutizatorlarida parolni olib tashlash uchun nimadan foydalaniladi?
+        ====
+        #Configuration register
+        ====
+        Log register
+        ====
+        Xabar registri
+        ====
+        Yozuvlar  registri
+
+
+        +++++
+
+
+
+        Rezervlash protokollari berilgan qatorni toping?
+        ====
+        #STP, RSTP
+        ====
+        LACP, HTTP
+        ====
+        SMTP, RSTP
+        ====
+        POP, PAgP
+
+
+        +++++
+
+
+
+        Agregatsiyalash protokollari berilgan qatorni toping?
+        ====
+        #LACP, PAgP
+        ====
+        STP, RIP
+        ====
+        POP, PAgP
+        ====
+        SMTP, RSTP
+
+
+        +++++
+
+
+
+        Port securityni sozlashda qaysi parametrdan foydalaniladi?
+        ====
+        #MAC-manzil
+        ====
+        IP-manzil
+        ====
+        Qurilma nomi
+        ====
+        Keng polosali manzil
+
+
+        +++++
+
+
+
+        Dinamik marshrutlash protokollari berilgan qatorni toping?
+        ====
+        #RIP, EIGRP, OSPF, BGP
+        ====
+        IP route, EIGRP, OSPF, Telnet
+        ====
+        HTTP, OSPF, POP
+        ====
+        SSH, IGRP, OSPF, BGP
+
+
+        +++++
+
+
+
+        Manzillarni translatsiya qilish qaysi texnologiya asosida amalga oshiriladi?
+        ====
+        #NAT
+        ====
+        DHCP
+        ====
+        DNS
+        ====
+        ARP
+
+
+        +++++
+
+
+
+        Troubleshooting nima uchun ishlatiladi?
+        ====
+        #Tarmoq xatoliklarini topish uchun
+        ====
+        Tarmoqni sozlash uchun
+        ====
+        Filtrlash uchun
+        ====
+        Testlash uchun
+
+
+        +++++
+
+
+
+        AAA serveri qaysi vazifalarni bajaradi?
+        ====
+        #Authentication, Authorization, Accounting
+        ====
+        Authentication, Authorization, Identification
+        ====
+        Authentication, Identification, Accounting
+        ====
+        Identification, Authorization, Accounting
+
+
+        +++++
+
+
+
+        ...- bu tarmoqning turli segmentlarida joylashgan oxirgi tizimlar o'rtasida ma'lumotlarini  uzatishga imkon beruvchi mexanizm hisoblanadi. Nuqtalar o'rniga to'g'ri javobni belgilang.
+        ====
+        #Marshrutlash
+        ====
+        Protokollash
+        ====
+        Shifrlash
+        ====
+        Standartlash
+
+
+        +++++
+
+
+
+        DNS xizmatining maqsadi nima?
+        ====
+        #tizim nomlarini aniqlash va ularni IP manzillarga aylantirish
+        ====
+        tarmoq ishlashini qo'llab-quvvatlash
+        ====
+        vaqtni sinxronlashtirish
+        ====
+        paket vaqtini sinxronlashtirish
+
+
+        +++++
+
+
+
+        WWW xizmatlaridan foydalanishning asosiy protokoli:
+        ====
+        #HTTP
+        ====
+        TELNET
+        ====
+        FTP
+        ====
+        SMTP
+
+
+        +++++
+
+
+
+        Ochiq tizimlarning o'zaro ta'sirining 7 sathli modeli nomini ko'rsating
+        ====
+        #OSI
+        ====
+        TCP
+        ====
+        IP
+        ====
+        MAC
+
+
+        +++++
+
+        Ma'lumotlarni eng kichik birligi nima?
+        ====
+        #bit
+        ====
+        bayt
+        ====
+        megabayt
+        ====
+        gigabayt
+
+
+        ${`<PASTE_YOUR_FILE_CONTENT_HERE>`}`;
+
+            const questionsDB = parseTests(rawText);
+
+            function parseTests(text) {
+              return text.split("+++++").map(block => {
+                const parts = block.trim().split("====").map(p => p.trim()).filter(Boolean);
+                if (parts.length < 2) return null;
+                const question = parts[0].replace(/^#/, '').trim();
+                const options = parts.slice(1).map(opt => opt.replace(/^#/, '').trim());
+                const correct = parts.slice(1).find(opt => opt.trim().startsWith('#'));
+                return {
+                  question,
+                  options,
+                  answer: correct ? correct.replace(/^#/, '').trim() : null
+                };
+              }).filter(Boolean);
+            }
+
+            function findQuestions() {
+              const input = document.getElementById("searchInput").value.toLowerCase().trim();
+              const output = document.getElementById("output");
+              output.innerHTML = "";
+
+              if (!input) {
+                output.innerHTML = `<p>Iltimos, matn kiriting.</p>`;
+                return;
+              }
+
+              const matches = questionsDB.filter(q => q.question.toLowerCase().includes(input));
+
+              if (matches.length === 0) {
+                output.innerHTML = `<p>Hech qanday savol topilmadi.</p>`;
+                return;
+              }
+
+              matches.forEach(found => {
+                const block = document.createElement("div");
+                block.innerHTML = `<div class="question">${found.question}</div>`;
+                found.options.forEach(option => {
+                  const div = document.createElement("div");
+                  div.className = "option";
+                  div.textContent = option;
+                  if (option === found.answer) div.classList.add("correct");
+                  block.appendChild(div);
+                });
+                output.appendChild(block);
+              });
+            }
+          </script>
+
+        </body>
+        </html>
