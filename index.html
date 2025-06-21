@@ -2296,7 +2296,7 @@ Kataloglarni suratga olish
             const questionsDB = parseTests(rawText);
 
             function parseTests(text) {
-              return text.split("+++++").map(block => {
+              return text.split("++++").map(block => {
                 const parts = block.trim().split("====").map(p => p.trim()).filter(Boolean);
                 if (parts.length < 2) return null;
                 const question = parts[0].replace(/^#/, '').trim();
